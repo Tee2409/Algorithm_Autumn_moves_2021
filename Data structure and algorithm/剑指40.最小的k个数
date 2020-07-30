@@ -1,6 +1,6 @@
 class Solution:
-    def getLeastNumbers(self, arr: List[int], k: int) -> List[int]:
-        """最小堆"""
+    def getLeastNumbers(self, arr, k) :
+        """大根堆 时间复杂度O(nlogk) n为arr长度"""
         if k == 0:
             return list()
         hp = [-x for x in arr[:k]]
