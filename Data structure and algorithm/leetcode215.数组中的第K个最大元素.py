@@ -5,6 +5,8 @@ class Solution:
     l r 左右指针
     index 目标索引
     约定 nums不为空
+    时间复杂度：O(N)，这里N是数组的长度，需要使用主定理进行分析。
+    空间复杂度：O(logN)，原地排序，没有借助额外的辅助空间，但递归需要临时存储空间。
     """
     def quick_sort(self,a,l,r,index):
         q = self.randompartition(a,l,r)
