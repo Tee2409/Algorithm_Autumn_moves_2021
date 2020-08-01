@@ -1,0 +1,13 @@
+---------- 1、基础学习
+-- 1）sql入门阅读《sql必知必会》
+-- 2）可参考菜鸟教程 进行知识点检验 https://www.runoob.com/sql/sql-tutorial.html
+-- 3）基础查询练习题可参考 https://zhuanlan.zhihu.com/p/99500898
+
+---------- 2、常用函数or题型
+-- 1）分组排序 ROW_NUMBER() OVER(partition by 分组列 order by 排序列)用法详解+经典实例 https://www.cnblogs.com/willingtolove/p/10623841.html
+-- 2）CASE WHEN用法 ： CASE WHEN 字段 条件 THEN 结果 ELSE 结果 END
+-- 3）SQL行转列、列转行 https://zhuanlan.zhihu.com/p/66207434  ps：SQL Sever和Oracle中有pivot函数，MySQL无 需注意自己使用的数据库是否有该函数
+--    行列变换 动态实现 https://blog.csdn.net/qq_35531549/article/details/90404986
+-- 4）临时表与with as https://www.cnblogs.com/zhaowei303/articles/4204805.html
+
+---------- 3、面经or笔试汇总整理
