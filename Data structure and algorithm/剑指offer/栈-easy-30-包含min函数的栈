@@ -1,0 +1,47 @@
+# 包含min函数的栈
+# 题目链接：https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/
+class MinStack:
+    # 时间复杂度 O(1)
+    # 空间复杂度 O(n)
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.stack=[]
+        self.stackmin=[]
+
+    def push(self, x: int) -> None:
+        self.stack.append(x)
+        if self.stackmin:
+            self.stackmin.append(min(self.stackmin[-1],x))
+        else:
+            self.stackmin.append(x)
+
+    def pop(self) -> None:
+        if self.stack:
+            self.stack.pop()
+            self.stackmin.pop()
+        else:
+            return False
+
+    def top(self) -> int:
+        if self.stack:
+            return self.stack[-1]
+        else:
+            return False
+
+    def min(self) -> int:
+        if self.stackmin:
+            return self.stackmin[-1]
+        else:
+            return False
+
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(x)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.min()
