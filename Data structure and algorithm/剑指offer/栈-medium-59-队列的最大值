@@ -28,3 +28,37 @@ class MaxQueue:
 # obj.push_back(value)
 # param_3 = obj.pop_front()
 # ---------------------------
+class MaxQueue:
+    # 2个数组实现
+
+    def __init__(self):
+        self.queue = []
+        self.maxvalue = []
+
+    def max_value(self) -> int:
+        if len(self.maxvalue)==0:
+            return -1
+        else:
+            return self.maxvalue[0]
+
+    def push_back(self, value: int) -> None:
+        self.queue.append(value)
+        while self.maxvalue and self.maxvalue[-1] < value:
+            self.maxvalue.pop()
+        self.maxvalue.append(value)
+
+
+    def pop_front(self) -> int:
+        if len(self.queue)==0:
+            return -1
+        else:
+            rs = self.queue.pop(0)
+            if rs == self.maxvalue[0]:
+                self.maxvalue.pop(0)
+            return rs
+
+# Your MaxQueue object will be instantiated and called as such:
+# obj = MaxQueue()
+# param_1 = obj.max_value()
+# obj.push_back(value)
+# param_3 = obj.pop_front()
