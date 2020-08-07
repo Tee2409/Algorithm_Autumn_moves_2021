@@ -1,4 +1,7 @@
 # 剑指 Offer 59 - II. 队列的最大值
+# 题目链接：https://leetcode-cn.com/problems/dui-lie-de-zui-da-zhi-lcof/
+# 参考链接：https://leetcode-cn.com/problems/dui-lie-de-zui-da-zhi-lcof/solution/ru-he-jie-jue-o1-fu-za-du-de-api-she-ji-ti-by-z1m/
+# 这里面还有另外2种解法 队列+双端队列 队列+数组 这里实现的是用max函数和2个数组
 # 使用python里的max函数
 class MaxQueue:
     # 暴力的使用max函数
