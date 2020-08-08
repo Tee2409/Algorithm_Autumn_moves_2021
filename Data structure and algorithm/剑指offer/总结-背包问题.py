@@ -64,12 +64,13 @@ if __name__ == '__main__':
     print(result)
     result = bag_01(1,5,[[10,60]])
     print(result)
+# 思考：如果要求的不是尽可能最大的价值，而是刚好等于背包容量的最大价值，那么该如何去做呢？
+
+# ----------完全背包问题-----------
+# 问题描述：有N件物品和一个容量为V的背包。第i件物品的体积是v[i]，价值是w[i]。求解不超过背包容量的前提下，将哪些物品装入背包可使价值总和最大。
+# 约束条件：每种物品的数量为无限个，你可以选择任意数量的物品。（每件物品可以被选多次）
 
 # [例题：](https://leetcode-cn.com/problems/coin-lcci/solution/ying-bi-by-leetcode-solution/)
-# ----------01背包问题-----------
-
-
-
 # ----------01背包问题-----------
 
 
@@ -84,5 +85,5 @@ if __name__ == '__main__':
 # https://leetcode-cn.com/problems/coin-lcci/solution/bei-bao-jiu-jiang-ge-ren-yi-jian-da-jia-fen-xiang-/
 # 2、github 背包问题九讲
 # https://github.com/tianyicui/pack/blob/master/V1/P01.muse
-# 3、
+# 3、动态规划——背包问题python实现（01背包、完全背包、多重背包）
 # https://www.cnblogs.com/anzhengyu/p/11408466.html
