@@ -31,6 +31,7 @@ for i in range(N):
 """
 # function
 def bag_01(N,V,goods):
+    # 二维dp 时间空间复杂度O(nv)
     # 初始化为0 注意边界
     dp = [[0 for _ in range(V+1)] for _ in range(N+1)]
     # 
@@ -47,7 +48,24 @@ if __name__ == '__main__':
     print(result)
     result = bag_01(1,5,[[10,60]])
     print(result)
+# 优化 可以看出上述状态转移公式只与前一个状态有关
+# 只使用一维数组来实现，这样可使空间复杂度降到 O(V)
+def bag_01(N,V,goods):
+    # 维数组来实现，这样可使空间复杂度降到 O(V) 时间空间复杂度仍为O(nv)
+    dp = [0 for i in range(V+1)]
+    for i in range(N):
+        for j in range(V,-1,-1): # 从后往前遍历 为了状态转移的时候
+            if j >= goods[i][0]:
+                # max函数里面的dp[j]其实代表的就是i-1时的状态值，dp[j-goods[i][0]]也是i-1的状态值
+                dp[j] = max(dp[j], dp[j-goods[i][0]] + goods[i][1])
+    return dp[-1]
+if __name__ == '__main__':
+    result = bag_01(4,50,[[0,0],[10,60],[20,100],[30,120]])
+    print(result)
+    result = bag_01(1,5,[[10,60]])
+    print(result)
 
+# [例题：](https://leetcode-cn.com/problems/coin-lcci/solution/ying-bi-by-leetcode-solution/)
 # ----------01背包问题-----------
 
 
