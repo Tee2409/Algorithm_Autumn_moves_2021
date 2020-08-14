@@ -64,3 +64,46 @@ for i in s:
         a.append(i)
 s=''.join(a)
 print(s)
+# 小红书2020 算法卷3
+# 笔记精选
+[n] = list(map(int,input().strip().split()))
+arr = list(map(int,input().strip().split()))
+if n == 1:
+    print(arr[0],end=' ')
+    print(1)
+elif n == 2:
+    print(max(arr),end=' ')
+    print(1)
+else:
+    dp = [0]*(n+1)
+    dpnum = [0]*(n+1)
+    dp[1],dpnum[1] = arr[0],1
+    for i in range(2,n+1):
+        if dp[i-1] < dp[i-2] + arr[i-1]:
+            dp[i] = dp[i-2] + arr[i-1]
+            dpnum[i] = dpnum[i-2] + 1
+        else:
+            dp[i] = dp[i-1]
+            dpnum[i] = dpnum[i-1]
+    print(dp[-1],dpnum[-1])
+# 倒买战利品
+n=int(input())
+a=[[int(i) for i in input().split()]for _ in range(n)]
+
+a=sorted(a)
+a=[i[1]for i in a]
+f = [0]*len(a)
+ans = 0
+for i in a:
+    l = 0
+    r = ans
+    while l < r:
+        m = (l + r) >> 1
+        if f[m] < i:
+            l = m + 1
+        else:
+            r = m
+    f[l] = i
+    if l == ans:
+        ans += 1
+print(ans)
