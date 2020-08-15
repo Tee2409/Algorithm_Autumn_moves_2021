@@ -16,7 +16,7 @@
 # 15、循环队列
 # 16、BFS DFS
 # 17、梯度下降（GD） 随机梯度下降（SGD） mini-batch GD
-# 18、
+# 18、模型受特征波动范围较大影响较小 树类的模型
 
 
 # ---------- 题目 ---------
@@ -105,7 +105,7 @@ else:
             dp[i] = dp[i-1]
             dpnum[i] = dpnum[i-1]
     print(dp[-1],dpnum[-1])
-# 倒买战利品
+# 倒买战利品 算法卷3
 n=int(input())
 a=[[int(i) for i in input().split()]for _ in range(n)]
 
@@ -126,3 +126,92 @@ for i in a:
     if l == ans:
         ans += 1
 print(ans)
+
+# 字符串倒序 算法卷1
+arr = list(map(str,input().strip().split()))
+#print(arr)
+s=''
+for i in range(len(arr)-1,-1,-1):
+    s = s + arr[i] + ' '
+print(s)
+
+# 击败怪物
+"""
+参考：
+链接：https://www.nowcoder.com/questionTerminal/e93f31a0387b40e88a53e55b8ab703f8
+来源：牛客网
+
+考察点：二分搜索、贪心
+参考了@Cyan1956大佬的代码，python实现
+
+思路：沿着[0,max_hp]的范围搜索最合适的伤害值，注意对一些特殊情形的处理。
+使用函数check_valid判断当前技能伤害能否过关
+首先是根据法力值的大小先对整体的怪物进行伤害，只求打满最大的伤害而不去补刀
+之后根据剩余的血量重排序，此时：
+如果没有了法力值，则只需要判断血量和是不是大约剩余轮数。
+如果剩余法力值，则根据重排序的结果，优先清掉血量高的怪物，之后再判断剩余的轮数够不够清掉所有的怪物。
+"""
+def check_valid(num, turn, magic, hps, damage):
+    # 使用技能造成伤害但不补刀，最后剩下法力值的时候在进行补刀
+    i = 0
+    for i in range(num):
+        # 释放技能的次数为整除的次数或者是魔力值的次数，取小的那个
+
+        spell_time = min(hps[i] // damage, magic)
+        hps[i] -= spell_time * damage
+        turn -= spell_time
+        magic -= spell_time
+        if magic == 0: break
+    # 去除刚好整除的值
+
+    hps = sorted(hps)
+    i = 0
+    if hps[-1] == 0:return True
+    while hps[i] == 0:
+        i += 1
+    hps = hps[i:]
+    # 普攻或者技能能够清掉
+
+    if sum(hps) <= turn : return True
+    if len(hps) <= magic:
+        return True
+
+    # 还剩余法力值，此时怪物的血量必定都小于技能伤害，按血量从高到低使用技能
+
+    else:
+        last = len(hps) - 1
+        while magic > 0:
+            last -= 1
+            magic -= 1
+            turn -= 1
+        # 无法力值，判断能否用普攻清完
+
+        hps = hps[:last+1]
+        return turn >= sum(hps)
+
+
+def main():
+    num, turn, magic = list(map(int, input().split()))
+    hps = list(map(int, input().split()))
+
+    #回合不够必定输
+
+    if len(hps) > turn: return -1
+
+    # 法力值为零且血量和大于回合数 必定输
+    if magic == 0 and sum(hps) > turn: return -1
+
+    left, right = 0, int(max(hps))
+    while left < right:
+        mid = (left + right) // 2
+        # 注意python浅拷贝的坑
+
+        if check_valid(num, turn, magic, hps.copy(), damage=mid):
+            right = mid
+        else:
+            left = mid+1
+    # 如果left = max(hps)，同样是不存在伤害值满足条件，left一直右移直到越界
+
+    return left if left < max(hps) else -1
+
+print(main())
