@@ -1,0 +1,13 @@
+# 这里记录数分遇到的概率论与数理统计相关知识点
+# 1、相关性、因果性
+# 2、logistic回归 多重共线性影响
+# 3、kmeans步骤
+# 4、标准化及其作用
+# 5、线性回归的假设和约束
+
+-- 相关性、因果行区别与联系 https://www.cnblogs.com/LittleHann/p/12463465.html
+
+-- 数据科学家 108道面试题 http://blog.sina.com.cn/s/blog_ed7344d50102wyu9.html
+
+-- 多重共线性对logistic系数影响 通常会增大估计参数的均方误差和标准误差，甚至可能使回归系数方向相反，导致方程极不稳定。
+-- 可参见多重共线性影响 https://baike.baidu.com/item/%E5%A4%9A%E9%87%8D%E5%85%B1%E7%BA%BF%E6%80%A7/10201978#3
