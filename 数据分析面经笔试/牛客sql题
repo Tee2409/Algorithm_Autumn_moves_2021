@@ -1,0 +1,67 @@
+-- 每个人最近的登陆日期（一）单表
+select max(date) as date0
+from login
+group by user_id
+order by user_id
+-- 每个人最近的登陆日期（二）连接表
+select user.name as u_n, client.name as c_n, MAX(date) as d
+from login 
+join user on login.user_id=user.id
+join client on login.client_id=client.id
+group by login.user_id order by user.name;
+-- 每个人最近的登陆日期（三）新用户次日留存率
+select round(count(distinct user_id)*1.0/(select count(distinct user_id) from login),3)
+from login
+where (user_id, date) in 
+(select user_id, date(min(date),'+1 day') from login group by user_id)
+-- 每个人最近的登陆日期（四）每个日期登陆新用户个数
+select login.date,ifnull(n1.new_num,0)
+from login 
+left join 
+(select l1.date,count(distinct l1.user_id) as new_num
+from login l1
+where l1.date =
+(select min(date) from login where user_id=l1.user_id)
+group by l1.date) n1
+on login.date = n1.date
+group by login.date order by login.date
+-- 每个人最近的登陆日期（五）每个日期新用户次日留存率
+select l1.date as date , 
+case when count(l1.date = l3.date or null) = 0 
+then 0.0 -- 新用户为0
+else
+round(count(l2.user_id=l1.user_id and l1.date = l3.date or null)*1.000/ count(l1.date = l3.date or null),3)
+end as p
+from login as l1 left join login as l2 
+on date(l1.date,'+1 day') = l2.date and l1.user_id = l2.user_id
+left join (select user_id,min(date)as date from login  group by user_id) as l3
+on l3.user_id =l1.user_id and l3.date =l1.date
+group by l1.date
+order by l1.date
+-- 每个人最近的登陆日期（六）每个用户每一天刷题通过数据
+--统计一下牛客每个用户每一天的刷题通过数据
+--包括用户的名字，以及用户用的设备的名字，用户刷题通过总数
+--不存在没有登录却刷题的情况，但是存在登录了没刷题的情况，不会存在刷题表里面
+--有提交代码没有通过的情况，但是会记录在刷题表里，只不过通过数目是0
+select a.u_n, a.c_n, pn.date as date,
+sum(pn.number)over(partition by pn.user_id order by pn.date)as ps_num
+from
+(
+    select login.user_id, user.name as u_n, client.name as c_n, login.date
+    from user 
+    join login  on login.user_id=user.id 
+    join client on client.id=login.client_id
+ )as a left join
+passing_number pn on a.user_id=pn.user_id and a.date=pn.date
+where pn.number is not null
+order by pn.date,a.u_n
+
+
+
+
+
+-- 出现3次以上相同积分的情况
+select number
+from grade
+group by number
+having count(number)>=3
