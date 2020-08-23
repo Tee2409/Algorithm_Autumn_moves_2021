@@ -56,12 +56,56 @@ passing_number pn on a.user_id=pn.user_id and a.date=pn.date
 where pn.number is not null
 order by pn.date,a.u_n
 
+-- 异常的邮件概率
+select email.date,round(sum(case email.type when'completed' then 0 else 1 end)*1.0/count(email.type),3) as p
+from email
+where email.send_id in (select id from user where is_blacklist==0)
+and email.receive_id in (select id from user where is_blacklist==0)
+group by email.date
 
+-- 刷题通过的题目排名
+-- 参考 https://www.cnblogs.com/shizhijie/p/9366247.html
+-- select RANK() OVER(order by [UserId]) as rank,* from [Order] 
+-- RANK 1 1 3 3 5 6
+-- select ROW_NUMBER() OVER(order by [SubTime] desc) as row_num,* from [Order]
+-- ROW_NUMBER 1 2 3 4 5 6
+-- select DENSE_RANK() OVER(order by [UserId]) as den_rank,* from [Order]
+-- DENSE_RANK 1 1 2 2 3 4
+-- select NTILE(4) OVER(order by [SubTime] desc) as ntile,* from [Order]
+select p.id,p.number,DENSE_RANK() over(order by number desc)
+from passing_number p
+order by number desc,id asc
 
+-- 考试前2分的学生
+select grade_id as id, name, score
+from 
+(select g.id as grade_id, l.name, g.score, l.id as language_id, dense_rank() over (partition by name order by score desc) as "r"
+from grade as g
+inner join language as l on g.language_id = l.id) as tmp
+where r <= 2
+order by name asc, score desc, grade_id asc;
 
+-- 获取当前薪水第二多的员工信息
+select a.emp_no,a.salary
+from (select emp_no,salary,dense_rank() over(order by salary desc) as rank
+from salaries
+where to_date='9999-01-01') a
+where rank == 2
 
 -- 出现3次以上相同积分的情况
 select number
 from grade
 group by number
 having count(number)>=3
+
+-- 找到每个人的任务
+select person.id,person.name,task.content
+from person
+left join task on person.id = task.person_id
+order by person.id
+
+-- 查找所有员工的last_name和first_name以及对应的dept_name，也包括暂时没有分配部门的员工
+select e.last_name,e.first_name,d2.dept_name
+from employees e
+left join dept_emp d on e.emp_no=d.emp_no
+left join departments d2 on d.dept_no=d2.dept_no
