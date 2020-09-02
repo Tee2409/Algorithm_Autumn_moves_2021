@@ -133,6 +133,22 @@ select f.title,f.description from film as f
 where f.film_id in (select fc.film_id from film_category as fc 
                where fc.category_id in (select c.category_id from category as c
                                         where c.name = 'Action')); 
+
+
+-- 使用含有关键字exists查找未分配具体部门的员工的所有信息。
+select *
+from employees
+where not exists( select emp_no from dept_emp
+where employees.emp_no=dept_emp.emp_no);
+
+-- 将employees表的所有员工的last_name和first_name拼接起来作为Name，中间以一个空格区分
+-- (注：该数据库系统是sqllite,字符串拼接为 || 符号，不支持concat函数)
+select last_name||' '||first_name as Name 
+from employees;
+
+-- 使用join查询方式找出没有分类的电影id以及名称
+SELECT f.film_id, f.title FROM film f LEFT JOIN film_category fc
+ON f.film_id = fc.film_id WHERE fc.category_id IS NULL;
 -- 创建一个actor_name表，并且将actor表中的所有first_name以及last_name导入该表
 create table actor_name as
 select first_name,last_name
@@ -149,3 +165,20 @@ create trigger audit_log after insert on employees_test
 begin
     insert into audit values(new.id,new.name);
 end
+
+-- 针对salaries表emp_no字段创建索引idx_emp_no，查询emp_no为10005, 使用强制索引。
+/*
+MYSQL中强制索引查询使用：FORCE INDEX(indexname);
+SQLite中强制索引查询使用：INDEXED BY indexname;
+*/
+select * from salaries indexed by idx_emp_no where emp_no=10005;
+
+-- 批量插入数据
+-- insert into 表名 values(数据1),(数据2)
+insert into actor
+values(1,'PENELOPE','GUINESS','2006-02-15 12:34:33'),
+(2,'NICK','WAHLBERG','2006-02-15 12:34:33');
+
+-- 更新语句，将所有获取奖金的员工当前的(salaries.to_date='9999-01-01')薪水增加10%。
+update salaries set salary=salary*1.1 where emp_no in (select emp_no from emp_bonus)
+and to_date='9999-01-01';
