@@ -1,3 +1,5 @@
+-- 注意噢 牛客用的sqlite
+
 -- 每个人最近的登陆日期（一）单表
 select max(date) as date0
 from login
@@ -109,3 +111,41 @@ select e.last_name,e.first_name,d2.dept_name
 from employees e
 left join dept_emp d on e.emp_no=d.emp_no
 left join departments d2 on d.dept_no=d2.dept_no
+
+-- 对first_name创建唯一索引uniq_idx_firstname，对last_name创建普通索引idx_lastname
+create unique index uniq_idx_firstname on actor(first_name);
+create index idx_lastname on actor(last_name);
+
+-- 查找员工编号emp_no为10001其自入职以来的薪水salary涨幅(总共涨了多少)growth(可能有多次涨薪，没有降薪)
+select max(salary)-min(salary) as growth
+from salaries
+where emp_no = 10001;
+
+-- 使用子查询的方式找出属于Action分类的所有电影对应的title,description
+-- 未用子查询
+select f.title,f.description
+from film f
+left join film_category fc on f.film_id=fc.film_id
+left join category c on fc.category_id=c.category_id
+where c.name='Action';
+-- 子查询
+select f.title,f.description from film as f
+where f.film_id in (select fc.film_id from film_category as fc 
+               where fc.category_id in (select c.category_id from category as c
+                                        where c.name = 'Action')); 
+-- 创建一个actor_name表，并且将actor表中的所有first_name以及last_name导入该表
+create table actor_name as
+select first_name,last_name
+from actor;
+
+-- 构造一个触发器audit_log，在向employees_test表中插入一条数据的时候，触发插入相关的数据到audit中
+/*
+1.创建触发器使用语句：CREATE TRIGGER trigname;
+2.指定触发器触发的事件在执行某操作之前还是之后，使用语句：BEFORE/AFTER [INSERT/UPDATE/ADD] ON tablename
+3.触发器触发的事件写在BEGIN和END之间；
+4.触发器中可以通过NEW获得触发事件之后2对应的tablename的相关列的值，OLD获得触发事件之前的2对应的tablename的相关列的值
+*/
+create trigger audit_log after insert on employees_test
+begin
+    insert into audit values(new.id,new.name);
+end
