@@ -1,7 +1,7 @@
 # 题目：https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/
 class Solution:
     def findNumberIn2DArray(self, matrix: List[List[int]], target: int) -> bool:
-        # 从右上角开始寻找 时间O(mn) 空间O(1)
+        # 从右上角开始寻找 时间O(m+n) 空间O(1)
         if not matrix:
             return False
         m,n = len(matrix),len(matrix[0])
