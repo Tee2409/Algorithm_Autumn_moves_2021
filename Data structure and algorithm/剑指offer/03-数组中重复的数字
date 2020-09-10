@@ -13,3 +13,26 @@ class Solution:
             if dic[i] > 1:
                 return i
                 break
+# 由于题目只需要找出1个数上面解法有多余 只需找到第一个即可
+# 时间空间复杂度 O(n)
+class Solution:
+    def findRepeatNumber(self, nums: [int]) -> int:
+        dic = set()
+        for num in nums:
+            if num in dic: return num
+            dic.add(num)
+        return -1
+
+# 时间 O(n) 空间复杂度O(1)
+class Solution:
+    def findRepeatNumber(self, nums: List[int]) -> int:
+        # 优化 原地修改
+        i = 0
+        while i < len(nums):
+            if nums[i] == i:
+                i += 1
+                continue
+            if nums[i] == nums[nums[i]]:
+                return nums[i]
+            nums[nums[i]],nums[i] = nums[i],nums[nums[i]] # 这里注意顺序颠倒是错误的
+        return 0
