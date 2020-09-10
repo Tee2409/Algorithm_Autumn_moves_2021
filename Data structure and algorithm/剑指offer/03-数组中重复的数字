@@ -1,0 +1,15 @@
+# https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/
+# hash表 时间空间复杂度 O(n)
+class Solution:
+    def findRepeatNumber(self, nums: List[int]) -> int:
+        if not nums or len(nums) == 0:return 0
+        dic = {}
+        for i in range(len(nums)):
+            if nums[i] in dic:
+                dic[nums[i]] += 1
+            else:
+                dic[nums[i]] = 1
+        for i in dic:
+            if dic[i] > 1:
+                return i
+                break
