@@ -1,0 +1,31 @@
+# 题目：https://leetcode-cn.com/problems/3sum/
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        if not nums or len(nums) < 3:
+            return []
+        # 升序排序
+        nums.sort()
+        rs = []
+        for i in range(len(nums)-2):
+            if nums[i] > 0:break # 如果3个数最小的已经大于0 跳出
+            if i > 0 and nums[i] == nums[i-1]:continue # 跳过相同数字
+            l,r=i+1,len(nums)-1
+            while l < r:
+                tmp = nums[i]+nums[l]+nums[r]
+                if tmp == 0:
+                    rs.append([nums[i],nums[l],nums[r]])
+                    l += 1
+                    r -= 1
+                    while l < r and nums[l] == nums[l-1]:
+                        l += 1
+                    while l < r and nums[r] == nums[r+1]:
+                        r -= 1
+                elif tmp > 0:
+                    r -= 1
+                    while l < r and nums[r] == nums[r+1]:
+                        r -= 1
+                else:
+                    l += 1
+                    while l < r and nums[l] == nums[l-1]:
+                        l += 1
+        return rs
