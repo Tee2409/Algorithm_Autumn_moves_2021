@@ -1,0 +1,14 @@
+# https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/
+class Solution:
+    def replaceSpace(self, s) :
+        # s str output str
+        # 时间 O(n)
+        # 空间 O(1)
+        if not s:return ''
+        rs =''
+        for i in range(len(s)-1,-1,-1):
+            if s[i] == ' ':
+                rs = '%20' + rs
+            else:
+                rs = s[i] + rs
+        return rs
