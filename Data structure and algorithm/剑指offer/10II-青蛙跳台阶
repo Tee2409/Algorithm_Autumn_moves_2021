@@ -1,0 +1,11 @@
+# https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/
+
+class Solution:
+    def numWays(self, n: int) -> int:
+        if n == 0:return 1
+        if n == 1:return 1
+        if n == 2:return 2
+        a,b =  1,2
+        for _ in range(n-2):
+            a,b = b,a+b
+        return b%1000000007
