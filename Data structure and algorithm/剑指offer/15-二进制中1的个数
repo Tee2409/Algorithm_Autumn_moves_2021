@@ -1,0 +1,8 @@
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        # 时间O(m) m 为1的个数 空间O(1)
+        rs = 0
+        while n:
+            rs += 1
+            n = n&(n-1)
+        return rs
