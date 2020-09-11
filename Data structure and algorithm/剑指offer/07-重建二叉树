@@ -1,0 +1,31 @@
+# 题目：https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/
+# 参考：https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/solution/mian-shi-ti-07-zhong-jian-er-cha-shu-di-gui-fa-qin/
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        # 给出前序和中序遍历 eg : preorder = [3,9,20,15,7] inorder = [9,3,15,20,7]
+        # 规律 前序遍历的第一个数字是根结点
+        # 时间O(n) buildtree遍历一遍 递归最坏O(n) 平均O(log2n)
+        # 空间O(n) 哈希表额外占用的空间
+        self.dic,self.po = {},preorder
+        # 中序遍历的数据对应的索引 self.dic = {9:0,3:1,15:2,20:3,7:4}
+        for i in range(len(inorder)):
+            self.dic[inorder[i]] = i
+        return self.recur(0,0,len(inorder)-1)
+    
+    def recur(self,pre_root,in_left,in_right):
+        # 定义一个递归函数
+        # pre_root 根结点索引
+        if in_left > in_right:return # 终止条件：中序遍历为空
+        root = TreeNode(self.po[pre_root])
+        i= self.dic[self.po[pre_root]] # 根结点在中序遍历中的索引
+        root.left = self.recur(pre_root+1,in_left,i-1) #左子树递归
+        root.right = self.recur(i-in_left+pre_root+1,i+1,in_right) #右子树递归
+        return root # 返回根节点，作为上层递归的左（右）子节点
