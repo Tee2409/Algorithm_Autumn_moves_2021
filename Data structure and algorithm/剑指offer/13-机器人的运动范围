@@ -1,0 +1,17 @@
+# 题目：https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/
+# 时间空间O(mn)
+def sumfunc(n):
+    rs = 0
+    while n:
+        rs += n % 10
+        n //= 10
+    return rs
+
+class Solution:
+    def movingCount(self, m: int, n: int, k: int) -> int:
+        tmp = set([(0,0)])
+        for i in range(m):
+            for j in range(n):
+                if  ((i-1,j) in tmp or (i,j-1)in tmp) and sumfunc(i)+sumfunc(j) <=k:
+                    tmp.add((i,j))
+        return len(tmp)
