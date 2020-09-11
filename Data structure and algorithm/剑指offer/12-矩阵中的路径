@@ -1,0 +1,26 @@
+# 题目：https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/
+# 参考：https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/solution/mian-shi-ti-12-ju-zhen-zhong-de-lu-jing-shen-du-yo/
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        # 时间空间复杂度 O(mn*3^k) O(k) M,N 分别为矩阵行列大小， K 为字符串 word 长度。
+        # dfs
+        def dfs(i,j,k):
+            # i,j 越界 or 当前board值和word第k个目标值不同 返回False
+            if not 0 <= i < len(board) or not 0 <= j < len(board[0]) or board[i][j] != word[k]:
+                return False
+            # 全部匹配成功
+            if k == len(word)-1:
+                return True
+            # tmp临时储存board值 这一条路访问过的值用'/'标记
+            tmp,board[i][j] = board[i][j],'/'
+            # 按照下、上、左、右顺序行走
+            rs = dfs(i+1,j,k+1) or dfs(i-1,j,k+1) or dfs(i,j+1,k+1) or dfs(i,j-1,k+1)
+            # 还原board值
+            board[i][j] = tmp
+            return rs
+        # 遍历矩阵找起点
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if dfs(i,j,0):
+                    return True
+        return False
