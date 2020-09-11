@@ -22,7 +22,7 @@ class Solution:
     
     def recur(self,pre_root,in_left,in_right):
         # 定义一个递归函数
-        # pre_root 根结点索引
+        # pre_root 根结点索引 in_left in_right 中序遍历左右边界
         if in_left > in_right:return # 终止条件：中序遍历为空
         root = TreeNode(self.po[pre_root])
         i= self.dic[self.po[pre_root]] # 根结点在中序遍历中的索引
