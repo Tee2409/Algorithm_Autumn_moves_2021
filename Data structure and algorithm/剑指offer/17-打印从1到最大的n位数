@@ -1,0 +1,9 @@
+class Solution:
+    def printNumbers(self, n: int) -> List[int]:
+        rs=[]
+        tmp = 1
+        for _ in range(n):
+            tmp *= 10
+        for i in range(1,tmp):
+            rs.append(i)
+        return rs
