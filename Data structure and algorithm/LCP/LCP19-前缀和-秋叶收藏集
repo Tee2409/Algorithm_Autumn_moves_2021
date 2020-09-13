@@ -1,0 +1,18 @@
+# 题目：https://leetcode-cn.com/problems/UlBDOe/
+# 参考：https://leetcode-cn.com/problems/UlBDOe/solution/qian-zhui-he-hou-zhui-zui-xiao-zhi-on-by-wincss/
+class Solution:
+    def minimumOperations(self, leaves: str) -> int:
+        # 时间O(n)
+        # 空间O(n)
+        n = len(leaves)
+        y = [0]
+        for i in range(n):
+            y.append(y[-1]+(leaves[i]=='y'))
+        t = [None]*(n+1)
+        t[n] = float('inf')
+        for i in range(n-1,-1,-1):
+            t[i] = min(t[i+1],i-2*y[i])
+        rs = float('inf')
+        for p1 in range(n-2,0,-1):
+            rs = min(rs,y[n]+2*y[p1]-p1+t[p1+1])
+        return rs
