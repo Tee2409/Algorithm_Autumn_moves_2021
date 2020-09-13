@@ -1,0 +1,26 @@
+# 题目：https://leetcode-cn.com/problems/2vYnGI/
+class Solution:
+    def breakfastNumber(self, staple: List[int], drinks: List[int], x: int) -> int:
+        """
+        # 超时
+        # 时间O(mn) 空间O(1)
+        rs = 0
+        for i in range(len(staple)):
+            for j in range(len(drinks)):
+                if staple[i]+drinks[j] <= x:
+                    rs += 1
+        return rs % 1000000007
+        """
+        # 双指针
+        # 时间O(m+n) 空间O(1)
+        staple.sort()
+        drinks.sort()
+        n,m = len(staple),len(drinks)
+        i,j=0,m-1
+        rs = 0
+        for i in range(len(staple)):
+            while j >= 0 and staple[i]+drinks[j]>x:
+                j -= 1
+            if j == -1:break
+            rs = (rs+j+1)%1000000007
+        return rs
