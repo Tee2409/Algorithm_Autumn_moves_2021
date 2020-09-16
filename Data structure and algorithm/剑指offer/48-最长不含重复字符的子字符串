@@ -1,0 +1,20 @@
+# 题目：https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        """ 双指针+哈希
+        tmp,rs,l={},0,-1
+        for r in range(len(s)):
+            if s[r] in tmp:
+                l = max(tmp[s[r]],l) # update l
+            tmp[s[r]] = r
+            rs = max(rs,r-l)
+        return rs
+        """
+        # dp+哈希
+        tmp,rs,dic=0,0,{}
+        for j in range(len(s)):
+            i = dic.get(s[j],-1)
+            dic[s[j]] = j
+            tmp = tmp + 1 if tmp < j-i else j-i
+            rs=max(rs,tmp)
+        return rs
