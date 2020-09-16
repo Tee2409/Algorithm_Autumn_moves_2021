@@ -1,0 +1,25 @@
+# 题目：https://leetcode-cn.com/problems/rotate-list/
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        #特殊情况
+        if head is None or head.next is None or k<=0:
+            return head
+        # 查看链表长度 n
+        n = 1
+        tmp = head
+        while tmp.next is not None:
+            n += 1
+            tmp = tmp.next
+        tmp.next = head # 闭环
+        # 原尾部节点指针游走 n - k % n 步, 到达新的尾部节点
+        for _ in range(n-k%n):
+            tmp = tmp.next
+        # 断环
+        head,tmp.next = tmp.next,None
+        return head
