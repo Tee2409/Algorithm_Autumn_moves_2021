@@ -1,0 +1,21 @@
+# 题目：https://leetcode-cn.com/problems/ba-zi-fu-chuan-zhuan-huan-cheng-zheng-shu-lcof/
+# 参考：https://leetcode-cn.com/problems/ba-zi-fu-chuan-zhuan-huan-cheng-zheng-shu-lcof/solution/mian-shi-ti-67-ba-zi-fu-chuan-zhuan-huan-cheng-z-4/
+class Solution:
+    def strToInt(self, str: str) -> int:
+        rs,i,sign,max_int,min_int,length = 0,0,1,2**31-1,-2**31,len(str)
+        bndry = 2**31//10
+        if not str:return 0
+        while str[i] ==' ':
+            i += 1
+            if i == length:return 0
+        if str[i] == '-':
+            sign = -1
+        if str[i] in '+-':
+            i += 1
+        for c in str[i:]:
+            if not '0' <= c <= '9':
+                break
+            if rs > bndry or rs == bndry and c > '7':
+                return max_int if sign ==1 else min_int
+            rs = 10*rs + ord(c) - ord('0')
+        return rs*sign
