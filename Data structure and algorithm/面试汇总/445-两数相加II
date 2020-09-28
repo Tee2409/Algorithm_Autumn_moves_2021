@@ -1,0 +1,81 @@
+# 题目：
+# 参考：https://leetcode-cn.com/problems/add-two-numbers-ii/solution/liang-shu-xiang-jia-ii-by-leetcode-solution/
+# 时间O(max(m,n)) 空间O(m+n)
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        
+        st1,st2 = [],[]
+        while l1:
+            st1.append(l1.val)
+            l1 = l1.next
+        while l2:
+            st2.append(l2.val)
+            l2 = l2.next
+        tmp = 0
+        rs = None
+        while st1 or st2 or tmp != 0:
+            a = 0 if not st1 else st1.pop()
+            b = 0 if not st2 else st2.pop()
+            cur = (a + b + tmp)%10
+            tmp = (a + b + tmp)//10
+            curnode = ListNode(cur)
+            curnode.next = rs
+            rs = curnode
+        return rs
+
+
+###### 第一遍 繁琐 ########
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        
+        if not l1 and not l2:return None
+        if not l1:return l2
+        if not l2:return l1
+
+        st1,st2 = [],[]
+        while l1:
+            st1.append(l1.val)
+            l1 = l1.next
+        while l2:
+            st2.append(l2.val)
+            l2 = l2.next
+        n1,n2 = len(st1),len(st2)
+        # 保持st1是短的链表
+        if n1 > n2:
+            st1,st2 = st2,st1
+            n1,n2 = n2,n1
+        for i in range(n1-1,-1,-1):
+            st2[i+n2-n1] = st2[i+n2-n1]+st1[i]
+        rs = None
+        for i in range(n2-1,0,-1):
+            if st2[i] < 10:
+                tmp = ListNode(st2[i])
+            else:
+                tmp = ListNode(st2[i]%10)
+                st2[i-1] += 1
+            tmp.next = rs
+            rs = tmp
+        if st2[0] < 10:
+            tmp = ListNode(st2[0])
+            tmp.next = rs
+            rs = tmp
+        else:
+            tmp = ListNode(st2[0]%10)
+            tmp.next = rs
+            rs = tmp
+            tmp = ListNode(1)
+            tmp.next = rs
+            rs = tmp
+        return rs
